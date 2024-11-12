@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="nostr:site"
+			content="naddr1qqtxketkd9hz6er99438yatedejn5cnzvs6rxcgpzamhxue69uhhyetvv9ujumnsw438qun09e3k7mgzypteqgapnyr2g3f5pc92d49rmh3dz8mpf7ml3kkc35uy82y567zakqcyqqq8wvqe0xadf"
+		/>
+		<title>Document</title>
+	</head>
+	<body>
+		<np-content-dm
+			data-npub="npub13ch6rllnruy5z2qm57836yw5zx4ytju4jl569jys6jhtp9furupsccdsaw"
+			data-relays="wss://relay.nostr.band"
+		></np-content-dm>
+
+		<np-content-comments></np-content-comments>
+		<script src="./dist/index.js"></script>
+		<script
+			type="text/javascript"
+			async
+			src="https://cdn.npubpro.com/zapthreads.iife.0.5.8.js"
+		></script>
+
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous"
+		></script>
+		<script src="https://files.v0l.io/0e963d84f9a28a65497baf18cf6e3f2cb94c1eb09d1d2f7bc28a64a31d26bb37.js"></script>
+
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.css"
+			type="text/css"
+			media="screen"
+		/>
+		<script>
+			;(() => {
+				const script = document.createElement('script')
+				script.async = true
+				script.type = 'text/javascript'
+				script.src =
+					'https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.js'
+				script.onload = () => {
+					new VenoBox({
+						selector: '.vbx-media',
+						spinColor: '#852327',
+						overlayColor: '#852327',
+					})
+				}
+				document.body.appendChild(script)
+			})()
+		</script>
+		<script
+			async=""
+			type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.js"
+		></script>
+
+		<script
+			type="text/javascript"
+			async=""
+			src="https://cdn.npubpro.com/zapthreads.iife.0.5.8.js"
+		></script>
+
+		<script
+			type="text/javascript"
+			async=""
+			src="./index.js"
+			data-cta-list="message,bookmark,zap,like,repost,share,follow,open-with"
+		></script>
+
+		<script
+			async=""
+			src="https://unpkg.com/nostr-login@1.6.7/dist/unpkg.js"
+			data-perms="sign_event:1,sign_event:7,sign_event:3,sign_event:9734,sign_event:10003"
+			data-start-screen="local-signup"
+			data-signup-relays="wss://relay.nostr.band/,wss://nos.lol/,wss://relay.damus.io/,wss://relay.primal.net/,wss://nostr.mom/"
+		></script>
+		<script>
+			;(async () => {
+				if (!window.nostrSite)
+					await new Promise((ok) =>
+						document.addEventListener('npLoad', ok),
+					)
+				const ep = window.nostrSite.plugins.register('nostr-login')
+				document.addEventListener('nlAuth', async (e) => {
+					console.log('nlAuth', e)
+					ep.dispatch('auth', {
+						type: e.detail.type,
+						pubkey: e.detail.pubkey,
+					})
+
+					if (
+						e.detail.type === 'login' ||
+						e.detail.type === 'signup'
+					) {
+						window.__nlAuthed = true
+					} else {
+						window.__nlAuthed = false
+					}
+
+					const npub = window.nostrSite.nostrTools.nip19.npubEncode(
+						await window.nostr.getPublicKey(),
+					)
+					const zapThreads = document.querySelector('zap-threads')
+					if (zapThreads) {
+						if (window.__nlAuthed)
+							zapThreads.setAttribute('user', npub)
+						else zapThreads.setAttribute('user', '')
+					}
+
+					const npContentDM = document.querySelector('np-content-dm')
+					if (npContentDM) {
+						if (window.__nlAuthed) {
+							// npContentDM.setAttribute(
+							// 	'data-user',
+							// 	await window.nostr.getPublicKey(),
+							// )
+							// console.log(
+							// 	'HISH',
+							// 	npContentDM,
+							// 	await window.nostr.getPublicKey(),
+							// )
+
+							npContentDM.setAttribute('data-user', npub)
+							console.log('HISH', npContentDM, npub)
+						} else npContentDM.setAttribute('data-user', '')
+					}
+					const zapButton = document.querySelector('#zap-button')
+					if (zapButton) {
+						if (window.__nlAuthed)
+							zapButton.setAttribute('data-anon', '')
+						else zapButton.setAttribute('data-anon', 'true')
+					}
+					const cta = document.querySelector('np-content-cta')
+					if (cta) {
+						if (window.__nlAuthed)
+							cta.setAttribute('data-user-npub', npub)
+						else cta.setAttribute('data-user-npub', '')
+					}
+				})
+			})()
+		</script>
+
+		<script src="https://cdn.npubpro.com/nostr-zap.0.22.2.js"></script>
+		<div></div>
+		<np-content-cta-selection></np-content-cta-selection>
+		<script>
+			;(async () => {
+				if (!window.nostrSite)
+					await new Promise((ok) =>
+						document.addEventListener('npLoad', ok),
+					)
+				const ep = window.nostrSite.plugins.register('nostr-zap')
+				console.log('nostr-zap ep', ep)
+				ep.subscribe('action-zap', (amount) => {
+					const button = document.querySelector('#zap-button')
+					button.setAttribute('data-amount', amount || '')
+					button.dispatchEvent(new Event('click'))
+				})
+				document.addEventListener('nostr-zap-published', (e) => {
+					console.log('nostr-zap on zap published', e)
+					ep.dispatch('event-published', e.detail)
+				})
+			})()
+		</script>
+
+		<script
+			async=""
+			src="https://unpkg.com/nostr-site-search@1.0.12/dist/index.js"
+		></script>
+		<script>
+			document.addEventListener('np-search-goto', (e) => {
+				console.log('np-search-goto', e)
+				window.location.href = e.detail
+			})
+		</script>
+		<script
+			async=""
+			src="https://cdn.npubpro.com/embeds.iife.1.0.4.js"
+		></script>
+
+		<script
+			type="text/javascript"
+			src="https://cdn.npubpro.com/maptalks.min.js"
+		></script>
+		<script>
+			const container = document.querySelector('np-map')
+			console.log('map', container)
+			if (container) {
+				const coords = container
+					.getAttribute('coords')
+					.split(',')
+					.map((c) => Number(c))
+				console.log('coords', coords)
+				const div = document.createElement('div')
+				div.style.width = '100%'
+				div.style.height = '300px'
+				container.append(div)
+				const map = new maptalks.Map(div, {
+					center: coords,
+					zoom: 15,
+					zoomControl: true, // add zoom control
+					scaleControl: true, // add scale control
+					baseLayer: new maptalks.TileLayer('base', {
+						//          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+						urlTemplate:
+							'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+						subdomains: ['a', 'b', 'c'], // "d"
+						attribution:
+							'&copy; <a href="http://osm.org">OpenStreetMap</a>',
+					}),
+				})
+
+				const point = new maptalks.Marker(coords, {
+					visible: true,
+					editable: false,
+					cursor: 'pointer',
+					draggable: false,
+					// symbol : {
+					//   'textFaceName' : 'sans-serif',
+					//   'textName' : 'MapTalks',
+					//   'textFill' : '#34495e',
+					//   'textHorizontalAlignment' : 'right',
+					//   'textSize' : 40
+					// }
+				})
+				point.on('click touchend', (e) => console.log(e))
+
+				new maptalks.VectorLayer('vector', point).addTo(map)
+			}
+		</script>
+
+		<script
+			type="text/javascript"
+			src="https://cdn.npubpro.com/index.js"
+			onload="window.nostrSite.startTab();"
+		></script>
+
+		<style>
+			#pwa-toast {
+				visibility: hidden;
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				margin: 16px;
+				padding: 12px;
+				border: 1px solid #8885;
+				border-radius: 4px;
+				z-index: 1;
+				text-align: left;
+				box-shadow: 3px 4px 5px 0 #8885;
+				display: grid;
+				background-color: #fff;
+			}
+			#pwa-toast .message {
+				margin-bottom: 8px;
+			}
+			#pwa-toast .buttons {
+				display: flex;
+			}
+			#pwa-toast button {
+				border: 1px solid #8885;
+				outline: none;
+				margin-right: 5px;
+				border-radius: 2px;
+				padding: 3px 10px;
+			}
+			#pwa-toast.show {
+				visibility: visible;
+			}
+			button#pwa-refresh {
+				display: none;
+			}
+			#pwa-toast.show.refresh button#pwa-refresh {
+				display: block;
+			}
+		</style>
+
+		<nl-banner dark-mode="true"></nl-banner
+		><deepl-input-controller></deepl-input-controller>
+	</body>
+</html>
