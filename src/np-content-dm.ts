@@ -9,7 +9,7 @@ async function waitNostrSite() {
 			document.addEventListener('npLoad', ok),
 		)
 	// @ts-ignore
-	return window.nostrSite.plugins.register('content-cta')
+	return window.nostrSite.plugins.register('zapthreads')
 }
 
 @customElement('np-content-dm')
@@ -23,7 +23,7 @@ export class DirectMessage extends LitElement {
 		TWStyles,
 	]
 
-	@property({ attribute: 'data-npub' }) npub = ''
+	@property({ attribute: 'data-peer-npub' }) npub = ''
 	@property({ attribute: 'data-relays' }) relays = ''
 	@property({ attribute: 'data-user' }) user = ''
 
