@@ -11,6 +11,6 @@
 		"experimentalDecorators": true,
 		"skipLibCheck": true
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "tw-lit-build.js"],
 	"exclude": ["node_modules"]
 }

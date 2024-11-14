@@ -11,26 +11,22 @@
 	</head>
 	<body>
 		<np-content-dm
-			data-peer-npub1="npub13ch6rllnruy5z2qm57836yw5zx4ytju4jl569jys6jhtp9furupsccdsaw"
-			data-peer-npub="npub1pr4du5xl28dy5sh4msz9uddnwxgzupkk4qzjzklv84edc6ruevzqlxmkzp"
-			data-relays="wss://relay.nostr.band,wss://relay.damus.io,wss://nos.lol"
+			data-peer-npub="npub1dp5sdyn7j6qcxv8hhcch8yn9tqpngtckvlk28pxaxnj96tx07fzq4twcfy"
+			data-relays="wss://relay.nostr.band,wss://relay.damus.io,wss://nos.lol,wss://relay.nsec.app/"
 		></np-content-dm>
 
 		<np-content-comments></np-content-comments>
+
 		<script src="./dist/index.js"></script>
+
 		<script
 			type="text/javascript"
 			async
 			src="https://cdn.npubpro.com/zapthreads.iife.0.6.0.js"
+			data-relays="wss://relay.nostr.band,wss://relay.damus.io,wss://nos.lol,wss://relay.nsec.app/"
 		></script>
 
-		<script
-			src="https://code.jquery.com/jquery-3.3.1.min.js"
-			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-			crossorigin="anonymous"
-		></script>
 		<script src="https://files.v0l.io/0e963d84f9a28a65497baf18cf6e3f2cb94c1eb09d1d2f7bc28a64a31d26bb37.js"></script>
-
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.css"
@@ -61,18 +57,11 @@
 		></script>
 
 		<script
-			type="text/javascript"
-			async=""
-			src="./index.js"
-			data-cta-list="message,bookmark,zap,like,repost,share,follow,open-with"
-		></script>
-
-		<script
 			async=""
 			src="https://unpkg.com/nostr-login@1.6.7/dist/unpkg.js"
 			data-perms="sign_event:1,sign_event:7,sign_event:3,sign_event:9734,sign_event:10003"
 			data-start-screen="local-signup"
-			data-signup-relays="wss://relay.nostr.band/,wss://nos.lol/,wss://relay.damus.io/,wss://relay.primal.net/,wss://nostr.mom/"
+			data-signup-relays="wss://relay.nostr.band/,wss://nos.lol/,wss://relay.damus.io/,wss://relay.primal.net/,wss://nostr.mom/,wss://relay.nsec.app/"
 		></script>
 		<script>
 			;(async () => {
@@ -107,23 +96,6 @@
 						else zapThreads.setAttribute('user', '')
 					}
 
-					const npContentDM = document.querySelector('np-content-dm')
-					if (npContentDM) {
-						if (window.__nlAuthed) {
-							// npContentDM.setAttribute(
-							// 	'data-user',
-							// 	await window.nostr.getPublicKey(),
-							// )
-							// console.log(
-							// 	'HISH',
-							// 	npContentDM,
-							// 	await window.nostr.getPublicKey(),
-							// )
-
-							npContentDM.setAttribute('data-user', npub)
-							console.log('HISH', npContentDM, npub)
-						} else npContentDM.setAttribute('data-user', '')
-					}
 					const zapButton = document.querySelector('#zap-button')
 					if (zapButton) {
 						if (window.__nlAuthed)
@@ -141,7 +113,6 @@
 		</script>
 
 		<script src="https://cdn.npubpro.com/nostr-zap.0.22.2.js"></script>
-		<div></div>
 		<np-content-cta-selection></np-content-cta-selection>
 		<script>
 			;(async () => {
@@ -182,52 +153,6 @@
 			type="text/javascript"
 			src="https://cdn.npubpro.com/maptalks.min.js"
 		></script>
-		<script>
-			const container = document.querySelector('np-map')
-			console.log('map', container)
-			if (container) {
-				const coords = container
-					.getAttribute('coords')
-					.split(',')
-					.map((c) => Number(c))
-				console.log('coords', coords)
-				const div = document.createElement('div')
-				div.style.width = '100%'
-				div.style.height = '300px'
-				container.append(div)
-				const map = new maptalks.Map(div, {
-					center: coords,
-					zoom: 15,
-					zoomControl: true, // add zoom control
-					scaleControl: true, // add scale control
-					baseLayer: new maptalks.TileLayer('base', {
-						//          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-						urlTemplate:
-							'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-						subdomains: ['a', 'b', 'c'], // "d"
-						attribution:
-							'&copy; <a href="http://osm.org">OpenStreetMap</a>',
-					}),
-				})
-
-				const point = new maptalks.Marker(coords, {
-					visible: true,
-					editable: false,
-					cursor: 'pointer',
-					draggable: false,
-					// symbol : {
-					//   'textFaceName' : 'sans-serif',
-					//   'textName' : 'MapTalks',
-					//   'textFill' : '#34495e',
-					//   'textHorizontalAlignment' : 'right',
-					//   'textSize' : 40
-					// }
-				})
-				point.on('click touchend', (e) => console.log(e))
-
-				new maptalks.VectorLayer('vector', point).addTo(map)
-			}
-		</script>
 
 		<script
 			type="text/javascript"
@@ -275,7 +200,6 @@
 			}
 		</style>
 
-		<nl-banner dark-mode="true"></nl-banner
-		><deepl-input-controller></deepl-input-controller>
+		<nl-banner dark-mode="true"></nl-banner>
 	</body>
 </html>
