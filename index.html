@@ -162,6 +162,19 @@
 			onload="window.nostrSite.startTab();"
 		></script>
 
+		<script>
+			;(async () => {
+				if (!window.nostrSite)
+					await new Promise((ok) =>
+						document.addEventListener('npLoad', ok),
+					)
+				const ep = window.nostrSite.plugins.register('test')
+				window.openDM = function() {
+					ep.dispatch('action-dm')
+				}
+			})()
+		</script>
+
 		<style>
 			#pwa-toast {
 				visibility: hidden;
@@ -202,6 +215,6 @@
 			}
 		</style>
 
-		<nl-banner dark-mode="true"></nl-banner>
+		<button onclick="openDM()">DM</button>
 	</body>
 </html>

@@ -14,6 +14,8 @@ export class Comments extends LitElement {
     super.connectedCallback();
 
     registerPlugin().then((ep) => {
+      // @ts-ignore
+      this.user = window.nostrSite.user()?.pubkey;
       ep.subscribe("auth", (info: { type: string; pubkey: string }) => {
         console.log("comments auth", info);
         this.user = info.pubkey;
