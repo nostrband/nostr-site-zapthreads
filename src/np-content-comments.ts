@@ -15,10 +15,10 @@ export class Comments extends LitElement {
 
     registerPlugin().then((ep) => {
       // @ts-ignore
-      this.user = window.nostrSite.user()?.pubkey;
-      ep.subscribe("auth", (info: { type: string; pubkey: string }) => {
+      this.user = window.nostrSite.user()?.pubkey || '';
+      ep.subscribe("auth", (info: { type: string; pubkey?: string }) => {
         console.log("comments auth", info);
-        this.user = info.pubkey;
+        this.user = info.pubkey || '';
       });
     });
   }

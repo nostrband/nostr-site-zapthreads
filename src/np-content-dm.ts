@@ -27,13 +27,15 @@ export class DirectMessage extends LitElement {
     super.connectedCallback();
 
     registerPlugin().then((ep) => {
+      // @ts-ignore
+      this.user = window.nostrSite.user()?.pubkey || '';
       ep.subscribe("action-dm", () => {
         setTimeout(() => {
           this.handleOpenDialog();
         }, 100);
       });
-      ep.subscribe("auth", (info: { type: string; pubkey: string }) => {
-        this.user = info.pubkey;
+      ep.subscribe("auth", (info: { type: string; pubkey?: string }) => {
+        this.user = info.pubkey || '';
       });
 
       // @ts-ignore
